@@ -71,6 +71,16 @@ class Api
     return new Types\SchemaPublic\PublicQuery($this->client(), $this->url, $this->load_paths);
   }
 
+  public function serviceMutation()
+  {
+    return new Types\SchemaService\ServiceMutation($this->client(), $this->url, $this->load_paths);
+  }
+
+  public function serviceQuery()
+  {
+    return new Types\SchemaService\ServiceQuery($this->client(), $this->url, $this->load_paths);
+  }
+
   /**
    * @return AccessToken
    * @throws Exception
