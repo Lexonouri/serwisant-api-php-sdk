@@ -1,7 +1,7 @@
 {
   "name": "lexonouri/serwisant-api",
   "description": "API client for https://serwisant.online service",
-  "version": "3.0.4",
+  "version": "3.0.5",
   "type": "library",
   "homepage": "https://github.com/Lexonouri/serwisant-api-php-sdk",
   "license": "Apache-2.0",

@@ -1,5 +1,11 @@
 # Serwisant Online PHP SDK
 
+## Installation:
+To install this package in composer environment use:
+
+```composer require lexonouri/serwisant-api```
+
+
 ## Requirements:
 
 * PHP 7.2 or higher
@@ -8,11 +14,11 @@
 
 ## Word about versioning
 
-Versioning od SDK is very important. It looks like `3.<major>.<minor>`, eg. `3.0.1`.
+Versioning of SDK is very important. It looks like `3.<major>.<minor>`, eg. `3.0.1`.
 When you're including SDK into your composer config, it's strongly recommended to set major version as fixed, eg:
 ```
 "require": {
-    "serwisant/serwisant-api": "3.0.*"
+    "lexonouri/serwisant-api": "3.0.*"
 },
 ```  
 It's important, because of typed queries and mutations. If schema will change, arguments passed to 
