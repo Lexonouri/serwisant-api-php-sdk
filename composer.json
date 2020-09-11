@@ -3,7 +3,7 @@
   "description": "API client for https://serwisant.online service",
   "version": "3.0.4",
   "type": "library",
-  "homepage": "https://github.com/SerwisantOnline/serwisant-api",
+  "homepage": "https://github.com/Lexonouri/serwisant-api-php-sdk",
   "license": "Apache-2.0",
   "require": {
     "guzzlehttp/guzzle": "^6.5",
@@ -13,6 +13,10 @@
     {
       "name": "Arkadiusz Kuryłowicz",
       "email": "sms@kurylowicz.info"
+    },
+    {
+      "name": "Mateusz Janota",
+      "email": "mateusz@dnacloud.pl"
     }
   ],
   "autoload": {
