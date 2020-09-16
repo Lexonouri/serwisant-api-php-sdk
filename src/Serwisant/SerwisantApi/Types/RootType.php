@@ -48,6 +48,8 @@ abstract class RootType
         return new SerwisantApi\GraphqlRequest($this->client, 'public', $this->schemaNamespace(), $this->url, $this->load_paths);
       case self::SCHEMA_INTERNAL:
         return new SerwisantApi\GraphqlRequest($this->client, 'internal', $this->schemaNamespace(), $this->url, $this->load_paths);
+      case self::SCHEMA_SERVICE:
+        return new SerwisantApi\GraphqlRequest($this->client, 'internal', $this->schemaNamespace(), $this->url, $this->load_paths);
       default:
         throw new SerwisantApi\Exception("Unsupported schema namespace {$this->schemaNamespace()}");
     }
