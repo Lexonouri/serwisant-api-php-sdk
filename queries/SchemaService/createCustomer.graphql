@@ -1,0 +1,258 @@
+scalar HashID
+
+enum CustomerType {
+    """Person"""
+    PERSONAL
+
+    """Company"""
+    BUSINESS
+}
+
+enum TaxPrefix {
+    AT
+    BE
+    BG
+    CY
+    CZ
+    DE
+    DK
+    EE
+    EL
+    ES
+    FI
+    FR
+    GB
+    HR
+    HU
+    IE
+    IT
+    LT
+    LU
+    LV
+    MT
+    NL
+    PL
+    PT
+    RO
+    SE
+    SI
+    SK
+}
+
+input PhoneInput {
+    number: String!
+    countryPrefix: String!
+}
+
+input CustomFieldValueInput {
+    ID: HashID!
+    value: String!
+}
+
+input CustomerInput {
+    type: CustomerType!
+    person: String
+    companyName: String
+    taxPrefix: TaxPrefix
+    taxId: String
+    email: String
+    phone: PhoneInput
+    customFields: [CustomFieldValueInput!]
+    group: HashID
+    activateInternetAccess: Boolean = false
+}
+
+input CustomerAgreementInput {
+    ID: HashID!
+    accepted: Boolean!
+}
+
+enum AddressType {
+    HOME
+    BUSINESS
+    OTHER
+    BILLING
+}
+
+enum CountryCode {
+    PL
+}
+
+input AddressInput {
+    type: AddressType!
+    street: String!
+    building: String!
+    city: String!
+    postalCode: String!
+    countryIso: CountryCode!
+}
+
+input FileInput {
+    """
+    File MIME type, eg. image/png - must be valid IANA media type, list:
+    http://www.iana.org/assignments/media-types/media-types.xhtml
+    """
+    contentType: String!
+
+    """File name, only for display purposes"""
+    name: String!
+
+    """
+    File content encoded with base64. Please note: generic request size limit is
+    always applied - whole mutation must be below 100MB
+    """
+    payload: String!
+
+    """Pass true if file can be viewed by customer in his panel"""
+    public: Boolean = false
+}
+
+type Address {
+    ID: HashID!
+    building: String!
+    city: String!
+    countryIso: String!
+    postalCode: String!
+    street: String!
+    type: AddressType!
+}
+
+enum ImageSize {
+    ORIGINAL
+    THUMBNAIL
+}
+
+type File {
+    contentType: String!
+    image: Boolean!
+    public: Boolean!
+    url(size: ImageSize = ORIGINAL): String
+}
+
+enum DictionaryType {
+    """Repaired equipment types"""
+    REPAIR_SUBJECT_TYPE
+
+    """Type of component from inventory"""
+    COMPONENT_TYPE
+
+    """Category of ticket"""
+    TICKET_CATEGORY
+
+    """Group od customers"""
+    CUSTOMER_GROUP
+}
+
+type Dictionary {
+    ID: HashID!
+    name: String!
+    type: DictionaryType!
+}
+
+enum CustomFieldForm {
+    REPAIR
+    TICKET
+    CUSTOMER
+}
+
+enum CustomFieldType {
+    """Single line text"""
+    TEXT
+
+    """Option"""
+    CHECKBOX
+
+    """Single choice list"""
+    SELECT
+
+    """Multi line text"""
+    TEXTAREA
+
+    """Password (will be encrypted)"""
+    PASSWORD
+
+    """Date picker"""
+    DATE
+}
+
+type CustomField {
+    ID: HashID!
+    concern: Dictionary
+    description: String
+    form: CustomFieldForm!
+    name: String!
+    required: Boolean!
+    selectOptions: [String!]
+    type: CustomFieldType!
+}
+
+type CustomFieldValue {
+    field: CustomField!
+    value: String
+}
+
+type Phone {
+    """Country prefix, eg. +48"""
+    countryPrefix: String
+    formatted: String
+    isGsm: Boolean!
+
+    """Number without country prefix - domestic number"""
+    number: String
+}
+
+type ServiceSupplier {
+    address: Address
+    addresses: [Address!]!
+    avatar: File
+    displayName: String!
+    email: String
+    phone: Phone
+}
+
+type Customer {
+    ID: HashID!
+    address: Address
+    addresses: [Address!]!
+    avatar: File
+    companyName: String
+
+    """Will return a list of values for custom fields"""
+    customFields: [CustomFieldValue!]!
+    displayName: String
+    email: String
+    files: [File!]!
+    internetAccess: Boolean!
+    isAnonymous: Boolean!
+    login: String
+    person: String
+    phone: Phone
+
+    """Service supplier who is default for that customer"""
+    serviceSupplier: ServiceSupplier!
+    taxId: String
+    taxPrefix: TaxPrefix
+
+    """
+    Time zone of customer, all times wisible for customer should be represented in this time zone
+    """
+    timeZone: String!
+    type: CustomerType!
+}
+
+"""Error from mutation"""
+type Error {
+    argument: String!
+    code: String!
+    message: String!
+}
+
+type CustomerCreationResult {
+    customer: Customer
+    errors: [Error!]
+}
+
+type ServiceMutation {
+    """Create a new customer account"""
+    createCustomer(customer: CustomerInput!, agreements: [CustomerAgreementInput!], addresses: [AddressInput!], files: [FileInput!]): CustomerCreationResult
+}
