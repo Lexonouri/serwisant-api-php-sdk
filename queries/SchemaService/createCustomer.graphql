@@ -1,3 +1,112 @@
+scalar HashID
+
+enum CustomerType {
+    """Person"""
+    PERSONAL
+
+    """Company"""
+    BUSINESS
+}
+
+enum TaxPrefix {
+    AT
+    BE
+    BG
+    CY
+    CZ
+    DE
+    DK
+    EE
+    EL
+    ES
+    FI
+    FR
+    GB
+    HR
+    HU
+    IE
+    IT
+    LT
+    LU
+    LV
+    MT
+    NL
+    PL
+    PT
+    RO
+    SE
+    SI
+    SK
+}
+
+input PhoneInput {
+    number: String!
+    countryPrefix: String!
+}
+
+input CustomFieldValueInput {
+    ID: HashID!
+    value: String!
+}
+
+input CustomerInput {
+    type: CustomerType!
+    person: String
+    companyName: String
+    taxPrefix: TaxPrefix
+    taxId: String
+    email: String
+    phone: PhoneInput
+    customFields: [CustomFieldValueInput!]
+    group: HashID
+    activateInternetAccess: Boolean = false
+}
+
+input CustomerAgreementInput {
+    ID: HashID!
+    accepted: Boolean!
+}
+
+enum AddressType {
+    HOME
+    BUSINESS
+    OTHER
+    BILLING
+}
+
+enum CountryCode {
+    PL
+}
+
+input AddressInput {
+    type: AddressType!
+    street: String!
+    building: String!
+    city: String!
+    postalCode: String!
+    countryIso: CountryCode!
+}
+
+input FileInput {
+    """
+    File MIME type, eg. image/png - must be valid IANA media type, list:
+    http://www.iana.org/assignments/media-types/media-types.xhtml
+    """
+    contentType: String!
+
+    """File name, only for display purposes"""
+    name: String!
+
+    """
+    File content encoded with base64. Please note: generic request size limit is
+    always applied - whole mutation must be below 100MB
+    """
+    payload: String!
+
+    """Pass true if file can be viewed by customer in his panel"""
+    public: Boolean = false
+}
+
 mutation ($customer: CustomerInput!, $agreements: [CustomerAgreementInput!], $addresses: [AddressInput!], $files: [FileInput!]) {
     createCustomer(
         customer: $customer,
