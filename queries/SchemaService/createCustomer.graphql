@@ -1,3 +1,64 @@
+scalar HashID
+
+enum CustomerType {
+    PERSONAL
+    BUSINESS
+}
+
+enum TaxPrefix {
+    AT
+    BE
+    BG
+    CY
+    CZ
+    DE
+    DK
+    EE
+    EL
+    ES
+    FI
+    FR
+    GB
+    HR
+    HU
+    IE
+    IT
+    LT
+    LU
+    LV
+    MT
+    NL
+    PL
+    PT
+    RO
+    SE
+    SI
+    SK
+}
+
+input PhoneInput {
+    number: String!
+    countryPrefix: String!
+}
+
+input CustomFieldValueInput {
+    ID: HashID!
+    value: String!
+}
+
+type CustomerInput {
+    type: CustomerType!
+    person: String
+    companyName: String
+    taxPrefix: TaxPrefix
+    taxId: String
+    email: String
+    phone: PhoneInput
+    customFields: [CustomFieldValueInput!]
+    group: HashID
+    activateInternetAccess: Boolean
+}
+
 mutation ($customer: CustomerInput!, $agreements: [CustomerAgreementInput!], $addresses: [AddressInput!], $files: [FileInput!]) {
     createCustomer(
         customer: $customer,
